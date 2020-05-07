@@ -37,3 +37,7 @@
       - Advance Windows kernel Programming
       
     
+#### Awesome Book by Pavel Yosifovich - https://leanpub.com/windowskernelprogramming
+
+![windows kernel programming](https://m.media-amazon.com/images/I/41qJOhBcKuL.jpg "
+Pavel Yosifovich")
