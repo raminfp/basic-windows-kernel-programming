@@ -1,0 +1,86 @@
+;
+; KeWdmVersion.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Sample ; TODO: edit Class
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=KeWdmVersion.cat
+DriverVer= ; TODO: set DriverVer in stampinf property pages
+
+[DestinationDirs]
+DefaultDestDir = 12
+KeWdmVersion_Device_CoInstaller_CopyFiles = 11
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+KeWdmVersion.sys  = 1,,
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NT$ARCH$
+
+[Standard.NT$ARCH$]
+%KeWdmVersion.DeviceDesc%=KeWdmVersion_Device, Root\KeWdmVersion ; TODO: edit hw-id
+
+[KeWdmVersion_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+KeWdmVersion.sys
+
+;-------------- Service installation
+[KeWdmVersion_Device.NT.Services]
+AddService = KeWdmVersion,%SPSVCINST_ASSOCSERVICE%, KeWdmVersion_Service_Inst
+
+; -------------- KeWdmVersion driver install sections
+[KeWdmVersion_Service_Inst]
+DisplayName    = %KeWdmVersion.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\KeWdmVersion.sys
+
+;
+;--- KeWdmVersion_Device Coinstaller installation ------
+;
+
+[KeWdmVersion_Device.NT.CoInstallers]
+AddReg=KeWdmVersion_Device_CoInstaller_AddReg
+CopyFiles=KeWdmVersion_Device_CoInstaller_CopyFiles
+
+[KeWdmVersion_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[KeWdmVersion_Device_CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[KeWdmVersion_Device.NT.Wdf]
+KmdfService =  KeWdmVersion, KeWdmVersion_wdfsect
+[KeWdmVersion_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
+ClassName="Samples" ; TODO: edit ClassName
+DiskName = "KeWdmVersion Installation Disk"
+KeWdmVersion.DeviceDesc = "KeWdmVersion Device"
+KeWdmVersion.SVCDESC = "KeWdmVersion Service"

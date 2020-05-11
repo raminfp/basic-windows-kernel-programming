@@ -32,6 +32,12 @@
   10- [KeThread](https://github.com/raminfp/basicwindowskernelprogramming/tree/master/KeThread) <br />
   11- [KeTimer](https://github.com/raminfp/basicwindowskernelprogramming/tree/master/KeTimer) <br />
   12- [KeVector](https://github.com/raminfp/basicwindowskernelprogramming/tree/master/KeVector) <br />
+  13- [KeHeapAlloc](https://github.com/raminfp/basicwindowskernelprogramming/tree/master/KeHeapAlloc) <br />
+  14- [KeFileWrite](https://github.com/raminfp/basicwindowskernelprogramming/tree/master/KeFileWrite) <br />
+  15- [KeFileRead](https://github.com/raminfp/basicwindowskernelprogramming/tree/master/KeFileRead) <br />
+  16- [KeLinkList](https://github.com/raminfp/basicwindowskernelprogramming/tree/master/KeLinkList) <br />
+  17- [KeSpinLock](https://github.com/raminfp/basicwindowskernelprogramming/tree/master/KeSpinLock) <br />
+  17- [KeWdmVersion](https://github.com/raminfp/basicwindowskernelprogramming/tree/master/KeWdmVersion) <br />
   
 #### TODO
       - Advance Windows kernel Programming

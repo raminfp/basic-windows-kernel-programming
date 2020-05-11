@@ -1,0 +1,86 @@
+;
+; KeHeapAlloc.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Sample ; TODO: edit Class
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=KeHeapAlloc.cat
+DriverVer= ; TODO: set DriverVer in stampinf property pages
+
+[DestinationDirs]
+DefaultDestDir = 12
+KeHeapAlloc_Device_CoInstaller_CopyFiles = 11
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+KeHeapAlloc.sys  = 1,,
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NT$ARCH$
+
+[Standard.NT$ARCH$]
+%KeHeapAlloc.DeviceDesc%=KeHeapAlloc_Device, Root\KeHeapAlloc ; TODO: edit hw-id
+
+[KeHeapAlloc_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+KeHeapAlloc.sys
+
+;-------------- Service installation
+[KeHeapAlloc_Device.NT.Services]
+AddService = KeHeapAlloc,%SPSVCINST_ASSOCSERVICE%, KeHeapAlloc_Service_Inst
+
+; -------------- KeHeapAlloc driver install sections
+[KeHeapAlloc_Service_Inst]
+DisplayName    = %KeHeapAlloc.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\KeHeapAlloc.sys
+
+;
+;--- KeHeapAlloc_Device Coinstaller installation ------
+;
+
+[KeHeapAlloc_Device.NT.CoInstallers]
+AddReg=KeHeapAlloc_Device_CoInstaller_AddReg
+CopyFiles=KeHeapAlloc_Device_CoInstaller_CopyFiles
+
+[KeHeapAlloc_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[KeHeapAlloc_Device_CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[KeHeapAlloc_Device.NT.Wdf]
+KmdfService =  KeHeapAlloc, KeHeapAlloc_wdfsect
+[KeHeapAlloc_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
+ClassName="Samples" ; TODO: edit ClassName
+DiskName = "KeHeapAlloc Installation Disk"
+KeHeapAlloc.DeviceDesc = "KeHeapAlloc Device"
+KeHeapAlloc.SVCDESC = "KeHeapAlloc Service"
